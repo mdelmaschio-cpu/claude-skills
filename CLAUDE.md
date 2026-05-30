@@ -141,6 +141,29 @@ See [standards/git/git-workflow-standards.md](standards/git/git-workflow-standar
 - Document all dependencies in SKILL.md
 - Prefer standard library implementations
 
+## Skill Validation Commands
+
+Run these before submitting a new or modified skill (from repo root):
+
+```bash
+# Structure validation (frontmatter, file layout, line count)
+python3 engineering/skill-tester/scripts/skill_validator.py <skill-path> --json
+
+# Quality scoring (description triggers, mode coverage, output artifacts)
+python3 engineering/skill-tester/scripts/quality_scorer.py <skill-path> --json
+
+# Script testing (--help and --sample smoke tests for all Python tools)
+python3 engineering/skill-tester/scripts/script_tester.py <skill-path> --json
+
+# Security audit (zero CRITICAL/HIGH findings required)
+python3 engineering/skill-security-auditor/scripts/skill_security_auditor.py <skill-path> --strict
+
+# CI quality gate — plugin.json path validation (runs on every PR)
+python3 scripts/check_plugin_json.py --all
+```
+
+**Minimum to pass:** structure score ≥ 75/100, all scripts pass `--help`, zero CRITICAL/HIGH security findings, SKILL.md under 500 lines.
+
 ## Current Version
 
 **Version:** v2.9.0 (released — research-ops/ domain: enterprise Research Operations)
