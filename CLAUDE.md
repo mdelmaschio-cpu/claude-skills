@@ -40,6 +40,12 @@ This repository uses **modular documentation**. For domain-specific guidance, se
 | **Business & Growth** | [business-growth/CLAUDE.md](business-growth/CLAUDE.md) | Customer success, sales engineering, revenue operations |
 | **Finance** | [finance/CLAUDE.md](finance/CLAUDE.md) | Financial analysis, DCF valuation, budgeting, forecasting, SaaS metrics |
 | **Research Operations** | [research-ops/CLAUDE.md](research-ops/CLAUDE.md) | Clinical study design, R&D finance, market research, product research (enterprise counterpart to academic research/) |
+| **Academic Research** | [research/CLAUDE.md](research/CLAUDE.md) | Literature review, grants, dossier, patent, syllabus, notebooklm |
+| **Productivity** | [productivity/CLAUDE.md](productivity/CLAUDE.md) | capture, email, reflect, handoff, andreessen skills |
+| **Business Operations** | [business-operations/CLAUDE.md](business-operations/CLAUDE.md) | Internal ops: process-mapper, vendor-management, capacity-planner, etc. |
+| **Commercial** | [commercial/CLAUDE.md](commercial/CLAUDE.md) | Per-deal economics: pricing-strategist, deal-desk, partnerships, etc. |
+| **Compliance OS** | [compliance-os/CLAUDE.md](compliance-os/CLAUDE.md) | Compliance operating system, controls, evidence, audit-readiness |
+| **Orchestration** | [orchestration/ORCHESTRATION.md](orchestration/ORCHESTRATION.md) | Persona + skill + agent coordination protocol |
 | **Standards Library** | [standards/CLAUDE.md](standards/CLAUDE.md) | Communication, quality, git, security standards |
 | **Templates** | [templates/CLAUDE.md](templates/CLAUDE.md) | Template system usage |
 
@@ -50,29 +56,58 @@ This repository uses **modular documentation**. For domain-specific guidance, se
 ```
 claude-code-skills/
 ├── .claude-plugin/            # Plugin registry (marketplace.json)
+├── .claude/                   # Claude Code AI config (hooks, settings)
+├── .codex-plugin/             # Codex plugin registry
+├── .codex/                    # OpenAI Codex AI config & skills index
+├── .gemini/                   # Gemini CLI skills index & config
+├── .hermes/                   # Hermes Agent pre-generated skills tree
+├── .vibe/                     # Mistral Vibe pre-generated skills tree
 ├── agents/                    # 32 standalone agents (cs-* + 7 personas); 51+ cs-* agents repo-wide
 ├── commands/                  # slash commands (changelog, tdd, saas-health, prd, code-to-prd, plugin-audit, sprint-plan, slo-design, etc.); 87+ repo-wide
 ├── engineering-team/          # 51 core engineering skills + Playwright Pro + Self-Improving Agent + Security Suite
 ├── engineering/               # 78 POWERFUL-tier advanced skills (incl. AgentHub, autoresearch-agent, self-eval, llm-wiki, tc-tracker, ship-gate, slo-architect, write-a-skill, caveman, grill-me, handoff)
 ├── product-team/              # 17 product skills (incl. apple-hig-expert) + Python tools
 ├── marketing-skill/           # 46 marketing skills (8 pods) + Python tools
+├── marketing/                 # 1 top-level marketing skill (landing page generator)
 ├── c-level-advisor/           # 66 C-level advisory skills (full C-suite + founder-mode agents + orchestration)
 ├── project-management/        # 9 PM skills + bundled Atlassian Remote MCP (.mcp.json)
 ├── ra-qm-team/                # 18 RA/QM compliance skills
-├── compliance-os/             # 9 compliance-OS skills
+├── compliance-os/             # 9 compliance-OS skills (controls, evidence, audit-readiness)
 ├── business-growth/           # 5 business & growth skills + Python tools
 ├── business-operations/       # 7 internal-ops skills (orchestrator + 6 sub-skills)
 ├── commercial/                # 8 per-deal-economics skills (orchestrator + 7 sub-skills)
 ├── finance/                   # 4 finance skills + Python tools
+├── productivity/              # 6 productivity skills (capture, email pair, reflect, handoff, andreessen)
 ├── research/                  # 8 academic research skills (orchestrator + 7 specialists)
 ├── research-ops/              # 5 research-ops skills (orchestrator + clinical-research + research-finance + market-research + product-research)
-├── eval-workspace/            # Skill evaluation results (Tessl)
-├── standards/                 # 5 standards library files
+├── orchestration/             # Orchestration protocol for multi-agent/persona coordination
+├── standards/                 # 5 standards library files (communication, quality, git, security)
 ├── templates/                 # Reusable templates
 ├── docs/                      # MkDocs Material documentation site
-├── scripts/                   # Build scripts (docs generation)
-└── documentation/             # Implementation plans, sprints, delivery
+├── scripts/                   # Build scripts (docs generation, cross-platform sync)
+└── documentation/             # Implementation plans, sprints, delivery (maintainer-local, gitignored)
 ```
+
+### Domain Summary Table
+
+| Directory | Category | Skills |
+|-----------|----------|--------|
+| `engineering-team/` | Core engineering roles | 51 |
+| `engineering/` | POWERFUL-tier advanced engineering | 78 |
+| `marketing-skill/` | Marketing & growth (8 pods) | 46 |
+| `marketing/` | Top-level marketing (landing page) | 1 |
+| `c-level-advisor/` | Executive advisory (full C-suite) | 66 |
+| `product-team/` | Product management | 17 |
+| `ra-qm-team/` | Regulatory & quality | 18 |
+| `compliance-os/` | Compliance operating system | 9 |
+| `project-management/` | PM tools (Atlassian MCP) | 9 |
+| `business-growth/` | Sales & business dev | 5 |
+| `business-operations/` | Internal ops (BizOps) | 7 |
+| `commercial/` | Per-deal economics | 8 |
+| `finance/` | Financial analysis | 4 |
+| `productivity/` | Productivity workflows | 6 |
+| `research/` | Academic research | 8 |
+| `research-ops/` | Enterprise research operations | 5 |
 
 ### Skill Package Pattern
 
@@ -89,13 +124,205 @@ skill-name/
 
 **Key Pattern**: Knowledge flows from `references/` → into `SKILL.md` workflows → executed via `scripts/` → applied using `assets/` templates.
 
+## Multi-AI Platform Support
+
+This repository supports 13 AI coding tools natively. Each platform has its own config directory:
+
+| Directory | Platform | Purpose |
+|-----------|----------|---------|
+| `.claude/` | Claude Code | Hooks, settings, session configuration |
+| `.claude-plugin/` | Claude Code plugins | `marketplace.json` plugin registry |
+| `.codex/` | OpenAI Codex | Skills index and config |
+| `.codex-plugin/` | Codex plugins | Plugin registry |
+| `.gemini/` | Gemini CLI | Skills index; run `./scripts/gemini-install.sh` to install |
+| `.hermes/` | Hermes Agent | Pre-generated skills tree; run `python scripts/sync-hermes-skills.py` to install |
+| `.vibe/` | Mistral Vibe | Pre-generated skills tree; run `./scripts/vibe-install.sh` to install |
+
+**Cross-platform sync scripts** (run by maintainers after merging skills, not by contributors):
+
+| Platform | Script |
+|----------|--------|
+| Codex CLI | `python3 scripts/sync-codex-skills.py` |
+| Gemini CLI | `python3 scripts/sync-gemini-skills.py` |
+| Hermes Agent | `python3 scripts/sync-hermes-skills.py --verbose` |
+| Mistral Vibe | `./scripts/vibe-install.sh` |
+| Cursor/Aider/etc. | `./scripts/convert.sh --tool all` |
+
+**Do not manually create or modify** `.codex/`, `.gemini/`, `.hermes/`, or `.vibe/` index files — these are auto-generated.
+
+## Skill Authoring Standard
+
+Every skill must follow the **10 Patterns** documented in [SKILL-AUTHORING-STANDARD.md](SKILL-AUTHORING-STANDARD.md):
+
+1. **Context-First** — Check domain context file before asking questions
+2. **Practitioner Voice** — Expert persona, direct language, opinionated
+3. **Multi-Mode Workflows** — 2-3 entry points (build/optimize/situation-specific)
+4. **Related Skills Navigation** — WHEN to use / WHEN NOT to use disambiguation
+5. **Reference Separation** — SKILL.md ≤10KB; heavy content in `references/`
+6. **Proactive Triggers** — Surface issues without being asked (4-6 per skill)
+7. **Output Artifacts** — Map requests to concrete deliverables (4-6 per skill)
+8. **Quality Loop** — Self-verify findings with confidence tagging
+9. **Communication Standard** — Bottom line first, What+Why+How, confidence tags
+10. **Python Tools** — Stdlib-only, CLI-first, JSON output, 0-100 scoring scale
+
+### SKILL.md Frontmatter (YAML)
+
+**Only two fields are allowed:**
+```yaml
+---
+name: "skill-name"
+description: "One-line description of when to use this skill. Be specific about trigger conditions."
+---
+```
+
+Do NOT include: `license`, `metadata`, `triggers`, `version`, `author`, `category`, `updated`, or any other fields.
+
+### Required Sections in Every SKILL.md
+
+1. **Title** (H1) — skill name
+2. **Overview** — what it does, when to use it
+3. **Core content** — workflows, patterns, instructions
+4. **Anti-Patterns** — common mistakes to avoid
+5. **Cross-References** — related skills in this repo
+
+### Quality Validation
+
+Before submitting, verify your skill passes:
+
+```bash
+# Structure validation
+python3 engineering/skill-tester/scripts/skill_validator.py <your-skill-path> --json
+
+# Quality scoring
+python3 engineering/skill-tester/scripts/quality_scorer.py <your-skill-path> --json
+
+# Script testing (if you have scripts)
+python3 engineering/skill-tester/scripts/script_tester.py <your-skill-path> --json
+
+# Security audit
+python3 engineering/skill-security-auditor/scripts/skill_security_auditor.py <your-skill-path> --strict
+```
+
+**Minimum requirements:**
+- Structure score ≥ 75/100
+- All scripts pass `--help`
+- Zero CRITICAL or HIGH security findings
+- SKILL.md under 500 lines
+
+## The Skill Pipeline
+
+Skills flow through a structured pipeline from ideation to distribution:
+
+```
+Megaprompt / Spec
+       ↓
+  SKILL.md authored (SKILL-AUTHORING-STANDARD.md)
+       ↓
+  Python tools added (stdlib-only, CLI-first)
+       ↓
+  References extracted (SKILL.md ≤10KB)
+       ↓
+  plugin.json created (.claude-plugin/)
+       ↓
+  8-phase plugin audit (structure + quality + scripts + security)
+       ↓
+  PR opened → dev branch
+       ↓
+  Cross-platform sync (codex / gemini / hermes / vibe)
+       ↓
+  Docs generated (mkdocs.yml updated)
+       ↓
+  Marketplace published (ClawHub, rate: 5/hour)
+```
+
+**Two build patterns:**
+- **Path-A** — Built from scratch using SKILL-AUTHORING-STANDARD.md
+- **Path-B** — Direct conversion from megaprompt spec (body → SKILL.md verbatim, 11-file layout, 3 stdlib tools, 3 reference docs, cs-* agent + /cs:* command). Source documented in `plugin.json` `source` field.
+
+## Conventions Summary
+
+Full details in [CONVENTIONS.md](CONVENTIONS.md). Key rules:
+
+| What | Rule |
+|------|------|
+| Frontmatter fields | `name` + `description` only |
+| SKILL.md max lines | 500 |
+| SKILL.md max size | 10KB |
+| Python dependencies | stdlib only — no pip installs |
+| PR target branch | `dev` (never `main`) |
+| plugin.json author | Object `{"name": "...", "url": "..."}`, never string |
+| plugin.json `skills` path | Must start with `./` (e.g., `"./"` or `"./skills"`) |
+| External links in README | Not accepted |
+| Commit format | Conventional commits |
+| Script output | Must support `--json` |
+| Branch naming | `feature/<skill>`, `fix/<desc>`, `improve/<skill>`, `docs/<desc>` |
+
+### Sub-Skills
+
+Some skills contain sub-skills in a nested `skills/` directory:
+
+```
+engineering-team/playwright-pro/
+├── SKILL.md                          ← Parent skill
+└── skills/
+    ├── generate/SKILL.md             ← Sub-skill
+    ├── fix/SKILL.md                  ← Sub-skill
+    └── migrate/SKILL.md              ← Sub-skill
+```
+
+- Sub-skills are documented within their parent's docs page, NOT as standalone pages.
+- Sub-skills do NOT get their own Codex/Gemini symlinks.
+- Sub-skills do NOT count toward the official skill total.
+
+## Installation & Setup
+
+See [INSTALLATION.md](INSTALLATION.md) for complete installation instructions. Quick reference:
+
+```bash
+# Claude Code — install a domain plugin
+/plugin marketplace add alirezarezvani/claude-skills
+/plugin install engineering-skills@claude-code-skills
+
+# Gemini CLI
+git clone https://github.com/alirezarezvani/claude-skills.git
+cd claude-skills && ./scripts/gemini-install.sh
+
+# OpenAI Codex
+npx agent-skills-cli add alirezarezvani/claude-skills --agent codex
+
+# Multi-tool conversion (Cursor, Aider, Windsurf, etc.)
+./scripts/convert.sh --tool all
+./scripts/install.sh --tool cursor --target /path/to/project
+
+# Hermes Agent
+python scripts/sync-hermes-skills.py --verbose
+
+# Mistral Vibe
+./scripts/vibe-install.sh
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guidelines. Key steps:
+
+1. Fork the repo and create a branch from `dev` (not `main`)
+2. Create your skill in the appropriate domain directory
+3. Follow [SKILL-AUTHORING-STANDARD.md](SKILL-AUTHORING-STANDARD.md) and [CONVENTIONS.md](CONVENTIONS.md)
+4. Run validation scripts (structure, quality, security)
+5. Open a PR targeting `dev` with a Conventional Commits message
+
+**What NOT to contribute:**
+- Skills requiring paid API keys
+- Skills that call LLMs in scripts
+- PRs targeting `main` instead of `dev`
+- Modifications to `.codex/`, `.gemini/`, `.hermes/`, `.vibe/` index files (auto-generated)
+- Changes to `marketplace.json` skill counts (curated by maintainers)
+
 ## Git Workflow
 
 **Branch Strategy:** feature → dev → main (PR only)
 
 **Branch Protection Active:** Main branch requires PR approval. Direct pushes blocked.
-
-### Quick Start
 
 ```bash
 # 1. Always start from dev
@@ -118,12 +345,6 @@ gh pr create --base dev --head feature/agents-{name}
 # 6. Periodically, dev merges to main via PR
 ```
 
-**Branch Protection Rules:**
-- ✅ Main: Requires PR approval, no direct push
-- ✅ Dev: Unprotected, but PRs recommended
-- ✅ All: Conventional commits enforced
-
-See [documentation/WORKFLOW.md](documentation/WORKFLOW.md) for complete workflow guide.
 See [standards/git/git-workflow-standards.md](standards/git/git-workflow-standards.md) for commit standards.
 
 ## Development Environment
@@ -135,11 +356,7 @@ See [standards/git/git-workflow-standards.md](standards/git/git-workflow-standar
 - CLI-first design for easy automation
 - Support both JSON and human-readable output
 - No ML/LLM calls (keeps skills portable and fast)
-
-**If adding dependencies:**
-- Keep scripts runnable with minimal setup (`pip install package` at most)
-- Document all dependencies in SKILL.md
-- Prefer standard library implementations
+- Naming convention: `snake_case_verb_noun.py` (e.g., `seo_checker.py`, `churn_risk_scorer.py`)
 
 ## Current Version
 
@@ -430,9 +647,14 @@ This repository publishes skills to **ClawHub** (clawhub.com) as the distributio
 - **Standards Library:** [standards/](standards/) - Communication, quality, git, documentation, security
 - **Implementation Plans:** [documentation/implementation/](documentation/implementation/)
 - **Sprint Delivery:** [documentation/delivery/](documentation/delivery/)
+- **MkDocs Site:** [mkdocs.yml](mkdocs.yml) - Docs site configuration (35K+ config, 293+ pages)
+- **Skill Authoring Standard:** [SKILL-AUTHORING-STANDARD.md](SKILL-AUTHORING-STANDARD.md) - The 10 patterns every skill must follow
+- **Conventions:** [CONVENTIONS.md](CONVENTIONS.md) - Mandatory rules for structure, format, and workflow
+- **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md) - PR workflow and requirements
+- **Installation:** [INSTALLATION.md](INSTALLATION.md) - Step-by-step setup for all 13 platforms
 
 ---
 
-**Last Updated:** May 27, 2026
+**Last Updated:** May 31, 2026
 **Version:** v2.9.0
 **Status:** 338 skills deployed across 16 domains, 62 marketplace plugins, docs site live
