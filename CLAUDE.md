@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **comprehensive skills library** for Claude AI and Claude Code - reusable, production-ready skill packages that bundle domain expertise, best practices, analysis tools, and strategic frameworks. The repository provides modular skills that teams can download and use directly in their workflows.
 
-**Current Scope:** 338 production-ready skills across 16 domains with 533 Python automation tools, 676 reference guides, 51+ agents (cs-* + 7 personas), and 87+ slash commands, distributed as 62 marketplace plugins. **v2.9.0 (complete)** added the **research-ops/** top-level domain — enterprise Research Operations (orchestrator + clinical-research + research-finance + market-research + product-research), the managed counterpart to the academic research/ domain, with `context: fork` orchestration and a Matt Pocock "Forcing-question library" in every SKILL.md plus `/cs:grill-research-ops`. **v2.8.0 (complete)** added 2 new top-level domains — **business-operations/** (7 internal-ops skills: orchestrator + process-mapper + vendor-management + capacity-planner + internal-comms + knowledge-ops + procurement-optimizer) and **commercial/** (8 per-deal-economics skills: orchestrator + pricing-strategist + deal-desk + partnerships-architect + channel-economics + commercial-policy + rfp-responder + commercial-forecaster) — with orchestrator skills using `context: fork` for chaining, Matt Pocock docs-anchored "Forcing-question library" in every SKILL.md, plus `/cs:grill-bizops` and `/cs:grill-commercial`. **v2.8.2** adds a productivity-shaped `handoff` skill (sibling to engineering/handoff) inspired by Matt Pocock — first-run setup with configurable save location, redaction linter, SessionStart + SessionEnd hooks, fidelity self-check, `--refresh` flag. **v2.8.1** upgraded the engineering role-skills (senior-fullstack / senior-frontend / senior-backend) with karpathy-coder + Matt Pocock decision engines + per-role forcing questions. v2.7.3 ports `alirezarezvani/aeo-box` — AEO (Answer Engine Optimization) skill into marketing-skill/ + security-guidance PreToolUse hook into engineering/. v2.7.0 added 13 Path-B skills across 3 top-level domains (productivity, marketing, research). v2.6.0 added 4 Matt Pocock-derived productivity skills.
+**Current Scope:** 339 production-ready skills across 16 domains with 574 Python automation tools, 679 reference guides, 51+ agents (cs-* + 7 personas), and 87+ slash commands, distributed as 63 marketplace plugins. **Post-v2.9.0 (unreleased):** `engineering-team/code-reviewer` expanded from 7 → 13 language rule files (C, C++, Rust, Ruby, PHP, Dart added) with deterministic analyzer wiring and C-specific smell detector (banned functions, format-string vulns, malloc NULL-check, use-after-free patterns; CWE-120/134/242/416/690). Mistral Vibe integration finalized (`scripts/sync-vibe-skills.py` + pre-generated `.vibe/` tree; 13 coding tools now supported). **v2.9.0 (complete)** added the **research-ops/** top-level domain — enterprise Research Operations (orchestrator + clinical-research + research-finance + market-research + product-research), the managed counterpart to the academic research/ domain, with `context: fork` orchestration and a Matt Pocock "Forcing-question library" in every SKILL.md plus `/cs:grill-research-ops`. **v2.8.0 (complete)** added 2 new top-level domains — **business-operations/** (7 internal-ops skills: orchestrator + process-mapper + vendor-management + capacity-planner + internal-comms + knowledge-ops + procurement-optimizer) and **commercial/** (8 per-deal-economics skills: orchestrator + pricing-strategist + deal-desk + partnerships-architect + channel-economics + commercial-policy + rfp-responder + commercial-forecaster) — with orchestrator skills using `context: fork` for chaining, Matt Pocock docs-anchored "Forcing-question library" in every SKILL.md, plus `/cs:grill-bizops` and `/cs:grill-commercial`. **v2.8.2** adds a productivity-shaped `handoff` skill (sibling to engineering/handoff) inspired by Matt Pocock — first-run setup with configurable save location, redaction linter, SessionStart + SessionEnd hooks, fidelity self-check, `--refresh` flag. **v2.8.1** upgraded the engineering role-skills (senior-fullstack / senior-frontend / senior-backend) with karpathy-coder + Matt Pocock decision engines + per-role forcing questions. v2.7.3 ports `alirezarezvani/aeo-box` — AEO (Answer Engine Optimization) skill into marketing-skill/ + security-guidance PreToolUse hook into engineering/. v2.7.0 added 13 Path-B skills across 3 top-level domains (productivity, marketing, research). v2.6.0 added 4 Matt Pocock-derived productivity skills.
 
 **Key Distinction**: This is NOT a traditional application. It's a library of skill packages meant to be extracted and deployed by users into their own Claude workflows.
 
@@ -30,18 +30,26 @@ This repository uses **modular documentation**. For domain-specific guidance, se
 | Domain | CLAUDE.md Location | Focus |
 |--------|-------------------|-------|
 | **Agent Development** | [agents/CLAUDE.md](agents/CLAUDE.md) | cs-* agent creation, YAML frontmatter, relative paths |
-| **Marketing Skills** | [marketing-skill/CLAUDE.md](marketing-skill/CLAUDE.md) | Content creation, SEO, ASO, demand gen, campaign analytics |
+| **Marketing Skills** | [marketing-skill/CLAUDE.md](marketing-skill/CLAUDE.md) | Content creation, SEO, ASO, demand gen, campaign analytics, AEO |
 | **Product Team** | [product-team/CLAUDE.md](product-team/CLAUDE.md) | RICE, OKRs, user stories, UX research, SaaS scaffolding |
-| **Engineering (Core)** | [engineering-team/CLAUDE.md](engineering-team/CLAUDE.md) | Fullstack, AI/ML, DevOps, security, data, QA tools |
-| **Engineering (POWERFUL)** | [engineering/](engineering/) | Agent design, RAG, MCP, CI/CD, database, observability |
-| **C-Level Advisory** | [c-level-advisor/CLAUDE.md](c-level-advisor/CLAUDE.md) | CEO/CTO strategic decision-making |
+| **Engineering (Core)** | [engineering-team/CLAUDE.md](engineering-team/CLAUDE.md) | Fullstack, AI/ML, DevOps, security, data, QA tools; code-reviewer (13 languages) |
+| **Engineering (POWERFUL)** | [engineering/](engineering/) | Agent design, RAG, MCP, CI/CD, database, observability, write-a-skill |
+| **C-Level Advisory** | [c-level-advisor/CLAUDE.md](c-level-advisor/CLAUDE.md) | CEO/CTO/CFO/CMO/CAIO/CDO/CCO/GC strategic decision-making |
 | **Project Management** | [project-management/CLAUDE.md](project-management/CLAUDE.md) | Atlassian MCP, Jira/Confluence integration |
 | **RA/QM Compliance** | [ra-qm-team/CLAUDE.md](ra-qm-team/CLAUDE.md) | ISO 13485, MDR, FDA, GDPR, ISO 27001 compliance |
+| **Compliance OS** | [compliance-os/](compliance-os/) | Meta-orchestrator: 9 frameworks (ISO 27001/13485/42001/14971, EU AI Act, MDR 745, GDPR, SOC 2, FDA QSR) |
 | **Business & Growth** | [business-growth/CLAUDE.md](business-growth/CLAUDE.md) | Customer success, sales engineering, revenue operations |
+| **Business Operations** | [business-operations/](business-operations/) | Internal ops: process-mapper, vendor-management, capacity-planner, internal-comms, knowledge-ops, procurement |
+| **Commercial** | [commercial/](commercial/) | Per-deal economics: pricing-strategist, deal-desk, partnerships, channel, RFP, forecaster |
 | **Finance** | [finance/CLAUDE.md](finance/CLAUDE.md) | Financial analysis, DCF valuation, budgeting, forecasting, SaaS metrics |
 | **Research Operations** | [research-ops/CLAUDE.md](research-ops/CLAUDE.md) | Clinical study design, R&D finance, market research, product research (enterprise counterpart to academic research/) |
+| **Research (Academic)** | [research/](research/) | Literature review, grants, patent, dossier, syllabus, notebooklm, pulse orchestrator |
+| **Productivity** | [productivity/](productivity/) | Capture, email, reflect, handoff (Matt Pocock), andreessen, workflow-builder |
+| **Marketing (Landing)** | [marketing/](marketing/) | Visual-premium GSAP landing pages — distinct from marketing-skill/ lead-gen pages |
 | **Standards Library** | [standards/CLAUDE.md](standards/CLAUDE.md) | Communication, quality, git, security standards |
 | **Templates** | [templates/CLAUDE.md](templates/CLAUDE.md) | Template system usage |
+| **Custom GPTs** | [custom-gpt/README.md](custom-gpt/README.md) | ChatGPT bridge: 6 GPTs packaging domain workflows (no Claude Code required) |
+| **Orchestration Patterns** | [orchestration/ORCHESTRATION.md](orchestration/ORCHESTRATION.md) | Lightweight persona+skill+task-agent coordination patterns |
 
 ## Architecture Overview
 
@@ -49,29 +57,37 @@ This repository uses **modular documentation**. For domain-specific guidance, se
 
 ```
 claude-code-skills/
-├── .claude-plugin/            # Plugin registry (marketplace.json)
+├── .claude-plugin/            # Plugin registry (marketplace.json) — 63 plugins
+├── .codex/                    # Codex CLI integration (skills-index.json + symlinks)
+├── .gemini/                   # Gemini CLI integration (skills-index.json)
+├── .hermes/                   # Hermes agent integration
+├── .vibe/                     # Mistral Vibe integration (sync-vibe-skills.py output)
 ├── agents/                    # 32 standalone agents (cs-* + 7 personas); 51+ cs-* agents repo-wide
-├── commands/                  # slash commands (changelog, tdd, saas-health, prd, code-to-prd, plugin-audit, sprint-plan, slo-design, etc.); 87+ repo-wide
-├── engineering-team/          # 51 core engineering skills + Playwright Pro + Self-Improving Agent + Security Suite
-├── engineering/               # 78 POWERFUL-tier advanced skills (incl. AgentHub, autoresearch-agent, self-eval, llm-wiki, tc-tracker, ship-gate, slo-architect, write-a-skill, caveman, grill-me, handoff)
+├── assets/                    # Shared assets (icon.png, shared fixtures)
+├── commands/                  # Slash commands (changelog, tdd, saas-health, prd, code-to-prd, plugin-audit, sprint-plan, slo-design, etc.); 87+ repo-wide
+├── engineering-team/          # 51 core engineering skills + Playwright Pro + Self-Improving Agent + Security Suite; code-reviewer supports 13 languages
+├── engineering/               # 79 POWERFUL-tier advanced skills (incl. AgentHub, autoresearch-agent, self-eval, llm-wiki, tc-tracker, ship-gate, slo-architect, write-a-skill, caveman, grill-me, handoff, workflow-builder)
 ├── product-team/              # 17 product skills (incl. apple-hig-expert) + Python tools
-├── marketing-skill/           # 46 marketing skills (8 pods) + Python tools
+├── marketing-skill/           # 46 marketing skills (8 pods: SEO, content, CRO, demand-gen, brand, social, analytics, AEO) + Python tools
+├── marketing/                 # 1 visual-premium landing skill (GSAP) — distinct from product-team/landing-page-generator
 ├── c-level-advisor/           # 66 C-level advisory skills (full C-suite + founder-mode agents + orchestration)
 ├── project-management/        # 9 PM skills + bundled Atlassian Remote MCP (.mcp.json)
 ├── ra-qm-team/                # 18 RA/QM compliance skills
-├── compliance-os/             # 9 compliance-OS skills
+├── compliance-os/             # 9 compliance-OS skills; meta-orchestrator for 9 frameworks (ISO 27001, 13485, 42001, 14971, EU AI Act, MDR 745, GDPR, SOC 2, FDA QSR)
 ├── business-growth/           # 5 business & growth skills + Python tools
-├── business-operations/       # 7 internal-ops skills (orchestrator + 6 sub-skills)
-├── commercial/                # 8 per-deal-economics skills (orchestrator + 7 sub-skills)
+├── business-operations/       # 7 internal-ops skills (orchestrator + process-mapper + vendor-management + capacity-planner + internal-comms + knowledge-ops + procurement-optimizer)
+├── commercial/                # 8 per-deal-economics skills (orchestrator + pricing-strategist + deal-desk + partnerships-architect + channel-economics + commercial-policy + rfp-responder + commercial-forecaster)
 ├── finance/                   # 4 finance skills + Python tools
-├── research/                  # 8 academic research skills (orchestrator + 7 specialists)
+├── research/                  # 8 academic research skills (orchestrator + 7 specialists: pulse, litreview, grants, dossier, patent, syllabus, notebooklm)
 ├── research-ops/              # 5 research-ops skills (orchestrator + clinical-research + research-finance + market-research + product-research)
-├── eval-workspace/            # Skill evaluation results (Tessl)
+├── productivity/              # 6 skills (capture, email, reflect, handoff [Matt Pocock], andreessen, workflow-builder)
+├── custom-gpt/                # 6 Custom GPTs bridging skills to ChatGPT — companion folder, not a skills domain
+├── orchestration/             # Lightweight persona+skill+task-agent orchestration pattern docs
 ├── standards/                 # 5 standards library files
 ├── templates/                 # Reusable templates
 ├── docs/                      # MkDocs Material documentation site
-├── scripts/                   # Build scripts (docs generation)
-└── documentation/             # Implementation plans, sprints, delivery
+├── scripts/                   # Build scripts (docs generation, cross-platform sync)
+└── documentation/             # Implementation plans, sprints, delivery (maintainer-local, gitignored)
 ```
 
 ### Skill Package Pattern
@@ -142,6 +158,35 @@ See [standards/git/git-workflow-standards.md](standards/git/git-workflow-standar
 - Prefer standard library implementations
 
 ## Current Version
+
+**Version:** v2.9.0 + unreleased (see below)
+
+---
+
+### [Unreleased] — post-v2.9.0 changes on dev/main
+
+#### code-reviewer: multi-language expansion (PRs #769, #772, #776)
+
+`engineering-team/skills/code-reviewer` now supports **13 languages** (up from 7). Three PRs merged in sequence:
+
+- **PR #769** — 6 new language rule files: `c.md`, `cpp.md`, `rust.md`, `ruby.md`, `php.md`, `dart.md`. Each follows the 8-section contract (PR Analyzer Signals / Code Quality / Security / Async / Resource Management / Exception Handling / Performance / Idioms).
+- **PR #772** — deterministic analyzer wiring: `LANGUAGE_EXTENSIONS`, `find_functions`, `find_classes` extended in `code_quality_checker.py` for all 6 new languages (+94/-1 lines, stdlib-only). All 4 regression fixtures still match committed `expected_outputs/*.json` byte-for-byte.
+- **PR #776** — C-specific smell detector (`check_c_specific_smells()`): banned functions (`gets`, `strcpy`, `sprintf`), format-string vuln (`printf(var)` bare identifier), unbounded `scanf %s`, `malloc`/`calloc` without NULL-check, `free()` without zeroing, `system()` with non-literal arg. CWE-120/134/242/416/690. Bundled fixtures: `assets/sample_c_smells.c` (10 hits, scores 4/F) + `assets/sample_c_clean.c` (0 hits, scores 100/A).
+
+Next in audit sequence (separate PRs): C++, Rust, Python, Kotlin, PHP, Ruby, Dart, Go, Swift, TypeScript, JavaScript smell detectors.
+
+#### Mistral Vibe full integration (PR closes #705)
+
+- `scripts/sync-vibe-skills.py` — installs skills to `~/.vibe/skills/claude-skills/` (fork of sync-hermes-skills.py; flags: `--verbose`, `--domain`, `--dry-run`, `--copy`, `--json`, `--target`).
+- `scripts/vibe-install.sh` — bash one-liner wrapper.
+- `.vibe/skills/claude-skills/` — pre-generated tree (306 skill symlinks across 14 domains + `skills-index.json`) committed to repo for inspection without running the script.
+- `INSTALLATION.md` updated; `README.md` "Works with" line: 12 → 13 coding tools.
+
+#### Marketing portfolio audit (PR #775)
+
+Gap analysis across 45-skill marketing portfolio; identifies underrepresented areas and skill improvement priorities. Result committed as `docs/marketing-audit-gaps.md`.
+
+---
 
 **Version:** v2.9.0 (released — research-ops/ domain: enterprise Research Operations)
 
@@ -364,12 +409,18 @@ This release ships the complete v2 megaprompt collection (`megaprompts/01-13`) a
 
 ## Roadmap
 
-**Phase 1-4 Complete:** 246 production-ready skills deployed across 9 domains
-- Engineering Core (32), Engineering POWERFUL (40), Product (13), Marketing (44), PM (9), C-Level (28), RA/QM (14), Business & Growth (5), Finance (3)
-- 359 Python automation tools, 485 reference guides, 27 agents, 33 commands
-- Complete enterprise coverage from engineering through regulatory compliance, sales, customer success, and finance
-- Reliability portfolio: feature-flags-architect, kubernetes-operator, chaos-engineering, slo-architect (Google SRE Workbook canon)
-- MkDocs Material docs site with 293+ indexed pages for SEO
+**Current state (post-v2.9.0):** 339 production-ready skills across 16 domains
+- Engineering Core (51), Engineering POWERFUL (79), Product (17), Marketing (46), PM (9), C-Level (66), RA/QM (18), Business & Growth (5), Finance (4), Compliance OS (9), Business Operations (7), Commercial (8), Research (8), Research Ops (5), Productivity (6), Marketing Landing (1)
+- 574 Python automation tools, 679 reference guides, 51+ agents, 87+ slash commands
+- 63 marketplace plugins distributed via .claude-plugin/marketplace.json
+- Complete enterprise coverage: engineering → compliance → C-suite advisory → deal economics → research ops
+- code-reviewer: 13-language support (C, C++, Rust, Ruby, PHP, Dart + 7 original; smell detectors for C#, Java, C)
+- 13 coding tools supported: Claude Code, Codex, Gemini CLI, Cursor, Hermes, Vibe + 7 more
+- MkDocs Material docs site live
+
+**Next up:**
+- Language-specific smell detectors for C++, Rust (security delta highest there: smart-pointer ownership, `unsafe` block discipline)
+- Per-domain CLAUDE.md files for currently undocumented domains (commands/, orchestration/, compliance-os/, productivity/, research/)
 
 See domain-specific roadmaps in each skill folder's README.md or roadmap files.
 
@@ -405,7 +456,7 @@ This repository publishes skills to **ClawHub** (clawhub.com) as the distributio
    **Historical regressions (now reversed upstream):** The `./` prefix was briefly forbidden between CC v2.1.107 and v2.1.144 (issues #539, #686). That window is closed; the `./` prefix is required again. Do **not** reintroduce the bare-string form for new manifests.
 
    **Enforcement:** `scripts/check_plugin_json.py --all` runs in `ci-quality-gate.yml` on every PR. It hard-fails on any non-`./`-prefixed string that isn't the legacy `"skills"` literal, on empty strings/arrays, and on non-string array entries. When CC tightens its path validator again in the future, update both the validator (`_check_skills_string` / `_check_skills_array`) and this section together — they must move in lockstep.
-6. **Version follows repo versioning.** ClawHub package versions must match the repo release version (currently v2.7.0+).
+6. **Version follows repo versioning.** ClawHub package versions must match the repo release version (currently v2.9.0+).
 
 ## Anti-Patterns to Avoid
 
@@ -433,6 +484,6 @@ This repository publishes skills to **ClawHub** (clawhub.com) as the distributio
 
 ---
 
-**Last Updated:** May 27, 2026
-**Version:** v2.9.0
-**Status:** 338 skills deployed across 16 domains, 62 marketplace plugins, docs site live
+**Last Updated:** June 6, 2026
+**Version:** v2.9.0 + unreleased (code-reviewer language expansion, Mistral Vibe, marketing audit)
+**Status:** 339 skills deployed across 16 domains, 63 marketplace plugins, 13 coding tools supported, docs site live
