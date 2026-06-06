@@ -1,0 +1,13 @@
+{
+  "name": "personal-workflow",
+  "description": "Workflow personale del maintainer di claude-skills. Carica questo skill per ottenere il contesto completo delle preferenze operative: lingua (italiano), regole git (conventional commits, PR verso dev, mai push diretto su main), conferma obbligatoria prima di azioni rischiose, ruolo (solo maintainer). Use when starting a new session on the claude-skills repository or when working on skills, plugins, or repository maintenance.",
+  "version": "2.9.0",
+  "author": {
+    "name": "M. Delmaschio",
+    "url": "https://eureka-market.com"
+  },
+  "homepage": "https://github.com/mdelmaschio-cpu/claude-skills/tree/main/personal/personal-workflow",
+  "repository": "https://github.com/mdelmaschio-cpu/claude-skills",
+  "license": "MIT",
+  "skills": ["./skills/personal-workflow"]
+}
