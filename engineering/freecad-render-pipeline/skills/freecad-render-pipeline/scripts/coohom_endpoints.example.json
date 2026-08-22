@@ -1,0 +1,12 @@
+{
+  "base_url": "https://REPLACE-WITH-BASE-URL-FROM-YOUR-PARTNER-DOCS",
+  "app_key": "env:COOHOM_APP_KEY",
+  "app_secret": "env:COOHOM_APP_SECRET",
+  "endpoints": {
+    "sso": "/REPLACE/from/your/partner/docs",
+    "create_design": "/REPLACE/from/your/partner/docs",
+    "upload_model": "/REPLACE/from/your/partner/docs",
+    "start_render": "/REPLACE/from/your/partner/docs",
+    "get_render_status": "/REPLACE/from/your/partner/docs"
+  }
+}
