@@ -1,0 +1,15 @@
+{
+  "name": "freecad-render-pipeline",
+  "description": "Turn FreeCAD 2D drawings and BIM/Arch models into photorealistic renders. Ships a working local pipeline (FreeCAD glTF/OBJ export -> Blender/Cycles photoreal render, auto-framed camera + lighting, zero extra accounts) plus a Python MCP server (FastMCP, stdio) exposing both that pipeline and a thin, honest client for Coohom's partner-gated Open API (the cloud interior-design/render platform commonly typed \"Cohoom\") that never fabricates connectivity to an unfilled endpoint. 3 stdlib-only CLI scripts (export, render, Coohom client) + 1 mcp-SDK MCP server, 3 references citing FreeCAD wiki / Blender API docs / Coohom's own public API-design-standard page, cs-freecad-render agent, /cs:render-freecad command.",
+  "version": "1.0.0",
+  "author": {
+    "name": "m.delmaschio",
+    "url": "https://github.com/mdelmaschio-cpu"
+  },
+  "homepage": "https://github.com/mdelmaschio-cpu/claude-skills/tree/main/engineering/freecad-render-pipeline",
+  "repository": "https://github.com/mdelmaschio-cpu/claude-skills",
+  "license": "MIT",
+  "skills": [
+    "./skills/freecad-render-pipeline"
+  ]
+}
